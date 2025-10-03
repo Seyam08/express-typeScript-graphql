@@ -1,16 +1,11 @@
-import { GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
+import { GraphQLSchema } from 'graphql';
+import { rootMutation } from '../mutation/rootMutation.js';
+import { rootQuery } from '../query/rootQuery.js';
 
 // Construct a schema
 const schema = new GraphQLSchema({
-  query: new GraphQLObjectType({
-    name: 'Query',
-    fields: {
-      hello: {
-        type: GraphQLString,
-        resolve: (): string => 'Hello world!',
-      },
-    },
-  }),
+  query: rootQuery,
+  mutation: rootMutation,
 });
 
 export default schema;
