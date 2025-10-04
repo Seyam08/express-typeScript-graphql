@@ -7,8 +7,9 @@ import {
 } from 'graphql';
 import { Context, RootValue } from '../@types/allTypes.js';
 import { mongooseIdValidator } from '../helper/validator.js';
+import { Author, IAuthor } from '../models/Author.js';
 import { Book, IBook } from '../models/Book.js';
-import { BookType } from '../schema/objType.js';
+import { AuthorType, BookType } from '../schema/objType.js';
 
 export const rootQuery = new GraphQLObjectType({
   name: 'RootQuery',
@@ -60,6 +61,25 @@ export const rootQuery = new GraphQLObjectType({
       resolve: async (): Promise<IBook[]> => {
         const books = await Book.find<IBook>();
         return books;
+      },
+    },
+    authorById: {
+      type: AuthorType,
+      description: 'Find author by id',
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: async (_parent, args): Promise<IAuthor> => {
+        if (!mongooseIdValidator(args.id)) {
+          throw new Error('Invalid Author ID format');
+        }
+        const author = await Author.findOne({
+          _id: args.id,
+        });
+        if (author) {
+          return author;
+        }
+        throw new Error('Author not found');
       },
     },
   }),
