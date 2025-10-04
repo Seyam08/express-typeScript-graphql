@@ -5,8 +5,9 @@ import {
   GraphQLString,
 } from 'graphql';
 import { Context, RootValue } from '../@types/allTypes.js';
+import { Author, IAuthor } from '../models/Author.js';
 import { Book, IBook } from '../models/Book.js';
-import { BookType } from '../schema/objType.js';
+import { AuthorType, BookType } from '../schema/objType.js';
 
 export const rootMutation = new GraphQLObjectType({
   name: 'RootMutation',
@@ -23,6 +24,19 @@ export const rootMutation = new GraphQLObjectType({
         const newBook = new Book({ name: args.name });
         const savedBook = await newBook.save({ validateBeforeSave: true });
         return savedBook;
+      },
+    },
+    addAuthor: {
+      type: AuthorType,
+      description: 'Add an Author',
+      args: {
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        // bookName: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: async (_parent, args): Promise<IAuthor> => {
+        const newAuthor = new Author({ name: args.name });
+        const savedAuthor = await newAuthor.save({ validateBeforeSave: true });
+        return savedAuthor;
       },
     },
   }),
