@@ -82,5 +82,32 @@ export const rootQuery = new GraphQLObjectType({
         throw new Error('Author not found');
       },
     },
+    authorByName: {
+      type: new GraphQLList(AuthorType),
+      description: 'Find Author by name',
+      args: {
+        name: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: async (_parent, args): Promise<IAuthor[]> => {
+        const author: IAuthor[] = await Author.find({
+          name: args.name,
+        }).collation({
+          locale: 'en',
+          strength: 1,
+        });
+        if (author && author.length > 0) {
+          return author;
+        }
+        throw new Error('Author not found');
+      },
+    },
+    allAuthors: {
+      type: new GraphQLList(AuthorType),
+      description: 'Get all Authors',
+      resolve: async (): Promise<IAuthor[]> => {
+        const authors = await Author.find();
+        return authors;
+      },
+    },
   }),
 });
