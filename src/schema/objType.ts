@@ -11,9 +11,9 @@ export const BookType = new GraphQLObjectType({
   name: 'Book',
   description: 'This represents a book written by an author',
   fields: (): GraphQLFieldConfigMap<RootValue, Context> => ({
-    id: { type: new GraphQLNonNull(GraphQLInt) },
+    id: { type: new GraphQLNonNull(GraphQLString) },
     name: { type: new GraphQLNonNull(GraphQLString) },
-    authorId: { type: new GraphQLNonNull(GraphQLInt) },
+    // authorId: { type: new GraphQLNonNull(GraphQLString) },
     // author: {
     //   type: AuthorType,
     //   resolve: (book) => authors.find((author) => author.id === book.authorId),
