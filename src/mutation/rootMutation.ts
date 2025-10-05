@@ -40,7 +40,9 @@ export const rootMutation = new GraphQLObjectType({
           newBook = new Book({ name: args.name, author: savedAuthor._id });
         }
 
-        const savedBook = await newBook.save({ validateBeforeSave: true });
+        const savedBook = (
+          await newBook.save({ validateBeforeSave: true })
+        ).populate('author');
         return savedBook;
       },
     },
