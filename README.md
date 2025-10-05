@@ -4,6 +4,10 @@ A simple **CRUD API** built with **Express.js**, **TypeScript**, **GraphQL**, an
 
 ---
 
+## Live preview link
+
+https://express-typescript-graphql.onrender.com/
+
 ## 🚀 Tech Stack
 
 - **Backend:** Express.js + TypeScript
