@@ -91,21 +91,33 @@ query {
 }
 ```
 
-### Fetch author by ID
+### Fetch author and book by ID
 
 ```graphql
 query {
-  authorById(id: "68e2096d3d64a7ad53a") {
+  authorById(id: "68e20964a7ad53a") {
     id
     name
+  }
+  bookById(id: "68e2096d3da7ad53a") {
+    id
+    name
+    author {
+      id
+      name
+    }
   }
 }
 ```
 
-### Fetch book by name
+### Fetch book and author by name
 
 ```graphql
 query {
+  authorByName(name: "Elif Shafak") {
+    id
+    name
+  }
   booksByName(name: "The Forty Rules of Love") {
     id
     name
@@ -149,9 +161,24 @@ mutation {
 
 ```graphql
 mutation {
-  updateAuthor(id: "68e2096d3d64a7ad62c6f53a", newName: "Elif Shafak") {
+  updateAuthor(id: "68e2096d3d64c6f53a", newName: "Elif Shafak") {
     id
     name
+  }
+}
+```
+
+### Update a book
+
+```graphql
+mutation MyMutation {
+  updateBook(id: "68e2096d3d64c6f53a", newName: "The Forty Rules of Love") {
+    id
+    name
+    author {
+      id
+      name
+    }
   }
 }
 ```
@@ -160,7 +187,7 @@ mutation {
 
 ```graphql
 mutation {
-  deleteBook(id: "68e2096d3d64a7ad62c6f53a") {
+  deleteBook(id: "68e2096d3d642c6f53a") {
     id
     name
   }
