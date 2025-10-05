@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import {
   GraphQLFieldConfigMap,
   GraphQLNonNull,
@@ -29,14 +30,12 @@ export const rootMutation = new GraphQLObjectType({
 
         let newBook;
         if (author) {
-          // eslint-disable-next-line no-underscore-dangle
           newBook = new Book({ name: args.name, author: author._id });
         } else {
           const newAuthor = new Author({ name: args.authorName });
           const savedAuthor = await newAuthor.save({
             validateBeforeSave: true,
           });
-          // eslint-disable-next-line no-underscore-dangle
           newBook = new Book({ name: args.name, author: savedAuthor._id });
         }
 
@@ -49,7 +48,6 @@ export const rootMutation = new GraphQLObjectType({
       description: 'Add an Author',
       args: {
         name: { type: new GraphQLNonNull(GraphQLString) },
-        // bookName: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: async (_parent, args): Promise<IAuthor> => {
         const newAuthor = new Author({ name: args.name });

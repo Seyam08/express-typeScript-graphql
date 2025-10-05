@@ -16,10 +16,6 @@ export const rootQuery = new GraphQLObjectType({
   name: 'RootQuery',
   description: 'Object for all query operations',
   fields: (): GraphQLFieldConfigMap<RootValue, Context> => ({
-    hello: {
-      type: GraphQLString,
-      resolve: (): string => 'Hello world!',
-    },
     bookById: {
       type: BookType,
       description: 'Find book by id',

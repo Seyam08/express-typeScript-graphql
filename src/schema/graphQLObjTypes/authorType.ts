@@ -12,9 +12,5 @@ export const AuthorType = new GraphQLObjectType({
   fields: (): GraphQLFieldConfigMap<RootValue, Context> => ({
     id: { type: new GraphQLNonNull(GraphQLString) },
     name: { type: new GraphQLNonNull(GraphQLString) },
-    // booksID: {
-    //   type: new GraphQLList(BookType),
-    //   resolve: (author) => books.filter((book) => book.authorId === author.id),
-    // },
   }),
 });
