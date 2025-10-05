@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import type { Request, Response } from 'express';
+import type { Response } from 'express';
 import express from 'express';
 import { createHandler } from 'graphql-http/lib/use/express';
 import mongoose from 'mongoose';
@@ -18,11 +18,6 @@ mongoose
     // console.log(error);
   });
 
-// Serve the GraphiQL IDE.
-app.get('/view', (_req, res: Response) => {
-  res.type('html');
-  res.end(ruruHTML({ endpoint: '/graphql' }));
-});
 // Create and use the GraphQL handler.
 app.all(
   '/graphql',
@@ -31,8 +26,10 @@ app.all(
   }),
 );
 
-app.get('/', (_req: Request, res: Response) => {
-  res.send('Hello Express + TypeScript + graphQL!');
+// Serve the GraphiQL IDE.
+app.get('/', (_req, res: Response) => {
+  res.type('html');
+  res.end(ruruHTML({ endpoint: '/graphql' }));
 });
 
 app.listen(PORT, () => {
