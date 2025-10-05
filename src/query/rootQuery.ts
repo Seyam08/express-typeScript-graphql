@@ -9,7 +9,8 @@ import { Context, RootValue } from '../@types/allTypes.js';
 import { mongooseIdValidator } from '../helper/validator.js';
 import { Author, IAuthor } from '../models/Author.js';
 import { Book, IBook } from '../models/Book.js';
-import { AuthorType, BookType } from '../schema/objType.js';
+import { AuthorType } from '../schema/graphQLObjTypes/authorType.js';
+import { BookType } from '../schema/graphQLObjTypes/bookType.js';
 
 export const rootQuery = new GraphQLObjectType({
   name: 'RootQuery',
@@ -31,7 +32,7 @@ export const rootQuery = new GraphQLObjectType({
         }
         const book = await Book.findOne({
           _id: args.id,
-        });
+        }).populate('author');
         if (book) {
           return book;
         }
@@ -45,10 +46,12 @@ export const rootQuery = new GraphQLObjectType({
         name: { type: new GraphQLNonNull(GraphQLString) },
       },
       resolve: async (_parent, args): Promise<IBook[]> => {
-        const books: IBook[] = await Book.find({ name: args.name }).collation({
-          locale: 'en',
-          strength: 1,
-        });
+        const books: IBook[] = await Book.find({ name: args.name })
+          .collation({
+            locale: 'en',
+            strength: 1,
+          })
+          .populate('author');
         if (books && books.length > 0) {
           return books;
         }
@@ -59,7 +62,7 @@ export const rootQuery = new GraphQLObjectType({
       type: new GraphQLList(BookType),
       description: 'List of all books',
       resolve: async (): Promise<IBook[]> => {
-        const books = await Book.find<IBook>();
+        const books = await Book.find<IBook>().populate('author');
         return books;
       },
     },
