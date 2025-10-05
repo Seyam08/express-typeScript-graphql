@@ -8,7 +8,7 @@ import schema from './schema/schema.js';
 
 const app = express();
 dotenv.config();
-const PORT = 3000;
+const PORT = process.env.SERVER_PORT;
 
 // mongoDB connection using mongoose
 mongoose

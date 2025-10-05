@@ -1,1 +1,1 @@
-{"root":["./src/index.ts"],"version":"5.9.3"}
+{"root":["./src/index.ts","./src/@types/alltypes.ts","./src/helper/validator.ts","./src/models/author.ts","./src/models/book.ts","./src/mutation/rootmutation.ts","./src/query/rootquery.ts","./src/schema/schema.ts","./src/schema/graphqlobjtypes/authortype.ts","./src/schema/graphqlobjtypes/booktype.ts"],"version":"5.9.3"}
