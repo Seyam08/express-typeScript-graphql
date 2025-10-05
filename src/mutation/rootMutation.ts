@@ -105,5 +105,27 @@ export const rootMutation = new GraphQLObjectType({
         throw new Error('Book not found');
       },
     },
+    deleteBook: {
+      type: BookType,
+      description: 'Delete a Book',
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: async (_parent, args): Promise<IBook> => {
+        // checking if id is valid mongoose id
+        if (!mongooseIdValidator(args.id)) {
+          throw new Error('Invalid Book ID format');
+        }
+        const deletedBook = await Book.findByIdAndDelete(args.id).populate(
+          'author',
+        );
+        // return deleted book if found
+        if (deletedBook) {
+          return deletedBook;
+        }
+        // if book not found throw error
+        throw new Error('Book not found');
+      },
+    },
   }),
 });
