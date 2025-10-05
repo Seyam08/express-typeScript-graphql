@@ -6,6 +6,7 @@ import {
   GraphQLString,
 } from 'graphql';
 import { Context, RootValue } from '../@types/allTypes.js';
+import { mongooseIdValidator } from '../helper/validator.js';
 import { Author, IAuthor } from '../models/Author.js';
 import { Book, IBook } from '../models/Book.js';
 import { AuthorType } from '../schema/graphQLObjTypes/authorType.js';
@@ -53,6 +54,55 @@ export const rootMutation = new GraphQLObjectType({
         const newAuthor = new Author({ name: args.name });
         const savedAuthor = await newAuthor.save({ validateBeforeSave: true });
         return savedAuthor;
+      },
+    },
+    updateAuthor: {
+      type: AuthorType,
+      description: 'Update an Author',
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) },
+        newName: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: async (_parent, args): Promise<IAuthor> => {
+        // checking if id is valid mongoose id
+        if (!mongooseIdValidator(args.id)) {
+          throw new Error('Invalid Author ID format');
+        }
+        const updatedAuthor = await Author.findByIdAndUpdate(
+          args.id,
+          { name: args.newName },
+          { new: true },
+        );
+        // return updated author if found
+        if (updatedAuthor) {
+          return updatedAuthor;
+        }
+        throw new Error('Author not found');
+      },
+    },
+    updateBook: {
+      type: BookType,
+      description: 'Update a Book',
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLString) },
+        newName: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      resolve: async (_parent, args): Promise<IBook> => {
+        // checking if id is valid mongoose id
+        if (!mongooseIdValidator(args.id)) {
+          throw new Error('Invalid Book ID format');
+        }
+        const updatedBook = await Book.findByIdAndUpdate(
+          args.id,
+          { name: args.newName },
+          { new: true },
+        ).populate('author');
+        // return updated book if found
+        if (updatedBook) {
+          return updatedBook;
+        }
+        // if book not found throw error
+        throw new Error('Book not found');
       },
     },
   }),
